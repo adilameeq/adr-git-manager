@@ -28,6 +28,7 @@
                 <v-sheet class="text-left" rounded="lg">
                     <!-- Button to connect to GitHub -->
                     <ConnectToGitHubButton />
+                    <ConnectToMsalButton />
                 </v-sheet>
             </v-col>
         </v-row>
@@ -36,11 +37,13 @@
 
 <script>
 import ConnectToGitHubButton from "/src/components/ConnectToGitHubButton.vue";
+import ConnectToMsalButton from "/src/components/ConnectToMsalButton.vue";
 
 export default {
     name: "Editor",
     components: {
-        ConnectToGitHubButton
+        ConnectToGitHubButton,
+        ConnectToMsalButton
     },
     data: () => ({})
 };
