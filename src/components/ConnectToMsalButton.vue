@@ -9,11 +9,6 @@
 
 <script>
 import  Msal  from "../msalConfig";
-import { LogLevel, PublicClientApplication } from "@azure/msal-browser";
-
-
-// import { msalConfig, PublicClientApplication } from "../plugins/msalConfig";
-
 export default {
   name: "connectMsal",
   data: () => ({
@@ -29,11 +24,33 @@ export default {
   },
   methods: {
     loginPopup() {
+        console.log(Msal.msalInstance)
+        Msal.msalInstance.acquireTokenSilent(Msal.loginRequest).then(tokenResponse => {
+    // Do something with the tokenResponse
+    console.log("here is response ", tokenResponse)
+}).catch(error => {
+    if (error instanceof InteractionRequiredAuthError) {
+        // fallback to interaction when silent call fails
+        return msalInstance.acquireTokenRedirect(Msal.loginRequest)
+    }
+
+    // handle other errors
+});
+
       // Call loginPopup after msalInstance is initialized
       Msal.msalInstance.loginPopup(Msal.loginRequest)
         .then(response => {
           // Handle successful login
           console.log('Login successful:', response);
+          const token = response.accessToken;
+                    const user = response.account;
+                    localStorage.setItem("authId", token);
+                    localStorage.setItem("user", user?.name);
+                    this.$router.push({
+                        name: "Editor",
+                        params: { id: this.user }
+                    });
+                    
         })
         .catch(error => {
           // Handle login error
